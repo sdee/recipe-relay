@@ -1,0 +1,5 @@
+type Party {
+	id: 
+  theme: String!
+  guests: Int!
+}
