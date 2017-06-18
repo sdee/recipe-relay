@@ -18,7 +18,8 @@
     "react-dom": "15.2.1",
     "react-relay": "dev",
     "react-router": "2.5.2",
-    "react-router-relay": "0.13.3"
+    "react-router-relay": "0.13.3",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",

@@ -3,8 +3,8 @@
  *   relay-compiler
  *
  * @providesModule appQuery.graphql
- * @generated SignedSource<<0eb6b4f49f551fc146ce0e4eb18fbc63>>
- * @relayHash 23acffc3113ebddb9ad337d4f6817b1f
+ * @generated SignedSource<<a01ebf82ba2512fc616f6290c6ff0fde>>
+ * @relayHash f5aeeb76b6412a6458d1835d9581128f
  * @flow
  * @nogrep
  */
@@ -29,7 +29,7 @@ query appQuery {
 
 fragment PartyApp_viewer on Viewer {
   id
-  allParties(last: 1000) {
+  allParties(last: 1) {
     edges {
       node {
         id
@@ -103,7 +103,7 @@ const batch /*: ConcreteBatch*/ = {
                   {
                     "kind": "Literal",
                     "name": "last",
-                    "value": 1000,
+                    "value": 1,
                     "type": "Int"
                   }
                 ],
@@ -155,7 +155,7 @@ const batch /*: ConcreteBatch*/ = {
                     "storageKey": null
                   }
                 ],
-                "storageKey": "allParties{\"last\":1000}"
+                "storageKey": "allParties{\"last\":1}"
               }
             ]
           }
@@ -173,7 +173,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query appQuery {\n  viewer {\n    ...PartyApp_viewer\n    id\n  }\n}\n\nfragment PartyApp_viewer on Viewer {\n  id\n  allParties(last: 1000) {\n    edges {\n      node {\n        id\n        theme\n        guests\n      }\n    }\n  }\n}\n"
+  "text": "query appQuery {\n  viewer {\n    ...PartyApp_viewer\n    id\n  }\n}\n\nfragment PartyApp_viewer on Viewer {\n  id\n  allParties(last: 1) {\n    edges {\n      node {\n        id\n        theme\n        guests\n      }\n    }\n  }\n}\n"
 };
 
 module.exports = batch;

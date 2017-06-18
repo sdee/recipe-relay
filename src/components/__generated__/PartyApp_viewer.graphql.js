@@ -3,7 +3,7 @@
  *   relay-compiler
  *
  * @providesModule PartyApp_viewer.graphql
- * @generated SignedSource<<621d0306b333e9ea91e380b6a96e2bb6>>
+ * @generated SignedSource<<a51e8b0ab6a68e16d21855d3639c7a1e>>
  * @flow
  * @nogrep
  */
@@ -49,7 +49,7 @@ const fragment /*: ConcreteFragment*/ = {
         {
           "kind": "Literal",
           "name": "last",
-          "value": 1000,
+          "value": 1,
           "type": "Int"
         }
       ],
@@ -101,7 +101,7 @@ const fragment /*: ConcreteFragment*/ = {
           "storageKey": null
         }
       ],
-      "storageKey": "allParties{\"last\":1000}"
+      "storageKey": "allParties{\"last\":1}"
     }
   ],
   "type": "Viewer"
