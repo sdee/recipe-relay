@@ -13,8 +13,9 @@ class PartyApp extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const party = props.viewer.allParties.edges[0].node
-		console.log(party)
+		const party = props.viewer.allParties.edges[0].node;
+		console.log(party);
+		console.log(party.menu);
 		this.state = { defaultServings: party.guests, guests: party.guests, theme: party.theme };
 	}
 

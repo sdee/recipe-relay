@@ -1,360 +1,1092 @@
-# An object with an ID
-interface Node {
-# The id of the object.
-id: ID!
+input AddToMenuGroupDishMenuGroupInput {
+  dishesDishId: ID!
+  menusMenuGroupId: ID!
+  clientMutationId: String!
 }
 
-type Query {
-viewer: Viewer!
-
-# Fetches an object given its ID
-node(
-# The ID of an object
-id: ID!
-): Node
+type AddToMenuGroupDishPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  menusMenuGroup: MenuGroup
+  dishesDish: Dish
+  menusMenuGroupEdge: MenuGroupEdge
+  dishesDishEdge: DishEdge
 }
 
-type Party implements Node {
-	theme: String!
+input AddToPartyMenuPartyInput {
+  menuMenuGroupId: ID!
+  partyPartyId: ID!
+  clientMutationId: String!
+}
+
+type AddToPartyMenuPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  partyParty: Party
+  menuMenuGroup: MenuGroup
+  partyPartyEdge: PartyEdge
+  menuMenuGroupEdge: MenuGroupEdge
+}
+
+# The `BigDecimal` scalar type represents signed fractional values with arbitrary precision.
+scalar BigDecimal
+
+# The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent arbitrary big values.
+scalar BigInt
+
+input CreateDish {
+  description: String
+  name: String!
+  menusIds: [ID!]
+  menus: [DishmenusMenuGroup!]
+}
+
+input CreateDishInput {
+  description: String
+  name: String!
+  menusIds: [ID!]
+  menus: [DishmenusMenuGroup!]
+  clientMutationId: String!
+}
+
+type CreateDishPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  dish: Dish
+  edge: DishEdge
+}
+
+input CreateFile {
+  name: String!
+}
+
+input CreateFileInput {
+  name: String!
+  clientMutationId: String!
+}
+
+type CreateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input CreateMenuGroup {
+  heading: String
+  partyId: ID
+  party: MenuGrouppartyParty
+  dishesIds: [ID!]
+  dishes: [MenuGroupdishesDish!]
+}
+
+input CreateMenuGroupInput {
+  heading: String
+  partyId: ID
+  party: MenuGrouppartyParty
+  dishesIds: [ID!]
+  dishes: [MenuGroupdishesDish!]
+  clientMutationId: String!
+}
+
+type CreateMenuGroupPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  menuGroup: MenuGroup
+  edge: MenuGroupEdge
+  party: Party
+}
+
+input CreateParty {
   guests: Int!
-	createdAt: DateTime!
-	id: ID!
-	updatedAt: DateTime!
+  theme: String!
+  menuIds: [ID!]
+  menu: [PartymenuMenuGroup!]
+}
+
+input CreatePartyInput {
+  guests: Int!
+  theme: String!
+  menuIds: [ID!]
+  menu: [PartymenuMenuGroup!]
+  clientMutationId: String!
+}
+
+type CreatePartyPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  party: Party
+  edge: PartyEdge
+}
+
+# If authentication was successful the payload contains the user and a token. If unsuccessful this payload is null.
+type CreateUserPayload {
+  user: User
+  clientMutationId: String
+  viewer: Viewer!
+}
+
+scalar DateTime
+
+input DeleteDishInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteDishPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  dish: Dish
+  edge: DishEdge
+  deletedId: ID
+}
+
+input DeleteFileInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+  deletedId: ID
+}
+
+input DeleteMenuGroupInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteMenuGroupPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  menuGroup: MenuGroup
+  edge: MenuGroupEdge
+  party: Party
+  deletedId: ID
+}
+
+input DeletePartyInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeletePartyPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  party: Party
+  edge: PartyEdge
+  deletedId: ID
+}
+
+input DeleteUserInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+  deletedId: ID
+}
+
+type Dish implements Node {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  menus(filter: MenuGroupFilter, orderBy: MenuGroupOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): MenuGroupConnection
+  name: String!
+  updatedAt: DateTime!
 }
 
 # A connection to a list of items.
-type PartyConnection {
-# Information to aid in pagination.
-pageInfo: PageInfo!
+type DishConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
 
-# A list of edges.
-edges: [PartyEdge]
+  # A list of edges.
+  edges: [DishEdge]
 
-# Count of filtered result set without considering pagination arguments
-count: Int!
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
 }
 
 # An edge in a connection.
-type PartyEdge {
-# The item at the end of the edge.
-node: Party!
+type DishEdge {
+  # The item at the end of the edge.
+  node: Dish!
 
-# A cursor for use in pagination.
-cursor: String!
+  # A cursor for use in pagination.
+  cursor: String!
 }
 
-input PartyFilter {
-AND: [PartyFilter!]
-OR: [PartyFilter!]
-complete: Boolean
-complete_not: Boolean
-createdAt: DateTime
-createdAt_not: DateTime
-createdAt_in: [DateTime!]
-createdAt_not_in: [DateTime!]
-createdAt_lt: DateTime
-createdAt_lte: DateTime
-createdAt_gt: DateTime
-createdAt_gte: DateTime
-id: ID
-id_not: ID
-id_in: [ID!]
-id_not_in: [ID!]
-id_lt: ID
-id_lte: ID
-id_gt: ID
-id_gte: ID
-id_contains: ID
-id_not_contains: ID
-id_starts_with: ID
-id_not_starts_with: ID
-id_ends_with: ID
-id_not_ends_with: ID
-text: String
-text_not: String
-text_in: [String!]
-text_not_in: [String!]
-text_lt: String
-text_lte: String
-text_gt: String
-text_gte: String
-text_contains: String
-text_not_contains: String
-text_starts_with: String
-text_not_starts_with: String
-text_ends_with: String
-text_not_ends_with: String
-updatedAt: DateTime
-updatedAt_not: DateTime
-updatedAt_in: [DateTime!]
-updatedAt_not_in: [DateTime!]
-updatedAt_lt: DateTime
-updatedAt_lte: DateTime
-updatedAt_gt: DateTime
-updatedAt_gte: DateTime
+input DishFilter {
+  AND: [DishFilter!]
+  OR: [DishFilter!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  menus_every: MenuGroupFilter
+  menus_some: MenuGroupFilter
+  menus_none: MenuGroupFilter
 }
 
-enum PartyOrderBy {
-complete_ASC
-complete_DESC
-createdAt_ASC
-createdAt_DESC
-id_ASC
-id_DESC
-text_ASC
-text_DESC
-updatedAt_ASC
-updatedAt_DESC
+input DishmenusMenuGroup {
+  heading: String
+  partyId: ID
+  party: DishmenusMenuGrouppartyParty
+  dishesIds: [ID!]
+  dishes: [DishmenusMenuGroupdishesDish!]
+}
+
+input DishmenusMenuGroupdishesDish {
+  description: String
+  name: String!
+  menusIds: [ID!]
+  menus: [DishmenusMenuGroupdishesDishmenusMenuGroup!]
+}
+
+input DishmenusMenuGroupdishesDishmenusMenuGroup {
+  heading: String
+  partyId: ID
+  dishesIds: [ID!]
+}
+
+input DishmenusMenuGrouppartyParty {
+  guests: Int!
+  theme: String!
+  menuIds: [ID!]
+  menu: [DishmenusMenuGrouppartyPartymenuMenuGroup!]
+}
+
+input DishmenusMenuGrouppartyPartymenuMenuGroup {
+  heading: String
+  partyId: ID
+  dishesIds: [ID!]
+}
+
+enum DishOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+  description_ASC
+  description_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type File implements Node {
-contentType: String!
-createdAt: DateTime!
-id: ID!
-name: String!
-secret: String!
-size: Int!
-updatedAt: DateTime!
-url: String!
+  contentType: String!
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  secret: String!
+  size: Int!
+  updatedAt: DateTime!
+  url: String!
 }
 
 # A connection to a list of items.
 type FileConnection {
-# Information to aid in pagination.
-pageInfo: PageInfo!
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
 
-# A list of edges.
-edges: [FileEdge]
+  # A list of edges.
+  edges: [FileEdge]
 
-# Count of filtered result set without considering pagination arguments
-count: Int!
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
 }
 
 # An edge in a connection.
 type FileEdge {
-# The item at the end of the edge.
-node: File!
+  # The item at the end of the edge.
+  node: File!
 
-# A cursor for use in pagination.
-cursor: String!
+  # A cursor for use in pagination.
+  cursor: String!
 }
 
 input FileFilter {
-AND: [FileFilter!]
-OR: [FileFilter!]
-contentType: String
-contentType_not: String
-contentType_in: [String!]
-contentType_not_in: [String!]
-contentType_lt: String
-contentType_lte: String
-contentType_gt: String
-contentType_gte: String
-contentType_contains: String
-contentType_not_contains: String
-contentType_starts_with: String
-contentType_not_starts_with: String
-contentType_ends_with: String
-contentType_not_ends_with: String
-createdAt: DateTime
-createdAt_not: DateTime
-createdAt_in: [DateTime!]
-createdAt_not_in: [DateTime!]
-createdAt_lt: DateTime
-createdAt_lte: DateTime
-createdAt_gt: DateTime
-createdAt_gte: DateTime
-id: ID
-id_not: ID
-id_in: [ID!]
-id_not_in: [ID!]
-id_lt: ID
-id_lte: ID
-id_gt: ID
-id_gte: ID
-id_contains: ID
-id_not_contains: ID
-id_starts_with: ID
-id_not_starts_with: ID
-id_ends_with: ID
-id_not_ends_with: ID
-name: String
-name_not: String
-name_in: [String!]
-name_not_in: [String!]
-name_lt: String
-name_lte: String
-name_gt: String
-name_gte: String
-name_contains: String
-name_not_contains: String
-name_starts_with: String
-name_not_starts_with: String
-name_ends_with: String
-name_not_ends_with: String
-secret: String
-secret_not: String
-secret_in: [String!]
-secret_not_in: [String!]
-secret_lt: String
-secret_lte: String
-secret_gt: String
-secret_gte: String
-secret_contains: String
-secret_not_contains: String
-secret_starts_with: String
-secret_not_starts_with: String
-secret_ends_with: String
-secret_not_ends_with: String
-size: Int
-size_not: Int
-size_in: [Int!]
-size_not_in: [Int!]
-size_lt: Int
-size_lte: Int
-size_gt: Int
-size_gte: Int
-updatedAt: DateTime
-updatedAt_not: DateTime
-updatedAt_in: [DateTime!]
-updatedAt_not_in: [DateTime!]
-updatedAt_lt: DateTime
-updatedAt_lte: DateTime
-updatedAt_gt: DateTime
-updatedAt_gte: DateTime
-url: String
-url_not: String
-url_in: [String!]
-url_not_in: [String!]
-url_lt: String
-url_lte: String
-url_gt: String
-url_gte: String
-url_contains: String
-url_not_contains: String
-url_starts_with: String
-url_not_starts_with: String
-url_ends_with: String
-url_not_ends_with: String
+  AND: [FileFilter!]
+  OR: [FileFilter!]
+  contentType: String
+  contentType_not: String
+  contentType_in: [String!]
+  contentType_not_in: [String!]
+  contentType_lt: String
+  contentType_lte: String
+  contentType_gt: String
+  contentType_gte: String
+  contentType_contains: String
+  contentType_not_contains: String
+  contentType_starts_with: String
+  contentType_not_starts_with: String
+  contentType_ends_with: String
+  contentType_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  secret: String
+  secret_not: String
+  secret_in: [String!]
+  secret_not_in: [String!]
+  secret_lt: String
+  secret_lte: String
+  secret_gt: String
+  secret_gte: String
+  secret_contains: String
+  secret_not_contains: String
+  secret_starts_with: String
+  secret_not_starts_with: String
+  secret_ends_with: String
+  secret_not_ends_with: String
+  size: Int
+  size_not: Int
+  size_in: [Int!]
+  size_not_in: [Int!]
+  size_lt: Int
+  size_lte: Int
+  size_gt: Int
+  size_gte: Int
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
 }
 
 enum FileOrderBy {
-contentType_ASC
-contentType_DESC
-createdAt_ASC
-createdAt_DESC
-id_ASC
-id_DESC
-name_ASC
-name_DESC
-secret_ASC
-secret_DESC
-size_ASC
-size_DESC
-updatedAt_ASC
-updatedAt_DESC
-url_ASC
-url_DESC
+  contentType_ASC
+  contentType_DESC
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  secret_ASC
+  secret_DESC
+  size_ASC
+  size_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  url_ASC
+  url_DESC
 }
 
+# The `Long` scalar type represents non-fractional signed whole numeric values.
+# Long can represent values between -(2^63) and 2^63 - 1.
+scalar Long
 
-scalar DateTime
-
-
-type User implements Node {
-createdAt: DateTime!
-id: ID!
-updatedAt: DateTime!
+type MenuGroup implements Node {
+  createdAt: DateTime!
+  dishes(filter: DishFilter, orderBy: DishOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): DishConnection
+  heading: String
+  id: ID!
+  party(filter: PartyFilter): Party!
+  updatedAt: DateTime!
 }
 
 # A connection to a list of items.
-type UserConnection {
-# Information to aid in pagination.
-pageInfo: PageInfo!
+type MenuGroupConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
 
-# A list of edges.
-edges: [UserEdge]
+  # A list of edges.
+  edges: [MenuGroupEdge]
 
-# Count of filtered result set without considering pagination arguments
-count: Int!
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+input MenuGroupdishesDish {
+  description: String
+  name: String!
+  menusIds: [ID!]
+  menus: [MenuGroupdishesDishmenusMenuGroup!]
+}
+
+input MenuGroupdishesDishmenusMenuGroup {
+  heading: String
+  partyId: ID
+  party: MenuGroupdishesDishmenusMenuGrouppartyParty
+  dishesIds: [ID!]
+  dishes: [MenuGroupdishesDishmenusMenuGroupdishesDish!]
+}
+
+input MenuGroupdishesDishmenusMenuGroupdishesDish {
+  description: String
+  name: String!
+  menusIds: [ID!]
+}
+
+input MenuGroupdishesDishmenusMenuGrouppartyParty {
+  guests: Int!
+  theme: String!
+  menuIds: [ID!]
 }
 
 # An edge in a connection.
-type UserEdge {
-# The item at the end of the edge.
-node: User!
+type MenuGroupEdge {
+  # The item at the end of the edge.
+  node: MenuGroup!
 
-# A cursor for use in pagination.
-cursor: String!
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input MenuGroupFilter {
+  AND: [MenuGroupFilter!]
+  OR: [MenuGroupFilter!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  heading: String
+  heading_not: String
+  heading_in: [String!]
+  heading_not_in: [String!]
+  heading_lt: String
+  heading_lte: String
+  heading_gt: String
+  heading_gte: String
+  heading_contains: String
+  heading_not_contains: String
+  heading_starts_with: String
+  heading_not_starts_with: String
+  heading_ends_with: String
+  heading_not_ends_with: String
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  dishes_every: DishFilter
+  dishes_some: DishFilter
+  dishes_none: DishFilter
+  party: PartyFilter
+}
+
+enum MenuGroupOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+  heading_ASC
+  heading_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input MenuGrouppartyParty {
+  guests: Int!
+  theme: String!
+  menuIds: [ID!]
+  menu: [MenuGrouppartyPartymenuMenuGroup!]
+}
+
+input MenuGrouppartyPartymenuMenuGroup {
+  heading: String
+  dishesIds: [ID!]
+  dishes: [MenuGrouppartyPartymenuMenuGroupdishesDish!]
+}
+
+input MenuGrouppartyPartymenuMenuGroupdishesDish {
+  description: String
+  name: String!
+  menusIds: [ID!]
+}
+
+type Mutation {
+  createDish(input: CreateDishInput!): CreateDishPayload
+  createFile(input: CreateFileInput!): CreateFilePayload
+  createMenuGroup(input: CreateMenuGroupInput!): CreateMenuGroupPayload
+  createParty(input: CreatePartyInput!): CreatePartyPayload
+  updateDish(input: UpdateDishInput!): UpdateDishPayload
+  updateFile(input: UpdateFileInput!): UpdateFilePayload
+  updateMenuGroup(input: UpdateMenuGroupInput!): UpdateMenuGroupPayload
+  updateParty(input: UpdatePartyInput!): UpdatePartyPayload
+  updateUser(input: UpdateUserInput!): UpdateUserPayload
+  updateOrCreateDish(input: UpdateOrCreateDishInput!): UpdateOrCreateDishPayload
+  updateOrCreateFile(input: UpdateOrCreateFileInput!): UpdateOrCreateFilePayload
+  updateOrCreateMenuGroup(input: UpdateOrCreateMenuGroupInput!): UpdateOrCreateMenuGroupPayload
+  updateOrCreateParty(input: UpdateOrCreatePartyInput!): UpdateOrCreatePartyPayload
+  updateOrCreateUser(input: UpdateOrCreateUserInput!): UpdateOrCreateUserPayload
+  deleteDish(input: DeleteDishInput!): DeleteDishPayload
+  deleteFile(input: DeleteFileInput!): DeleteFilePayload
+  deleteMenuGroup(input: DeleteMenuGroupInput!): DeleteMenuGroupPayload
+  deleteParty(input: DeletePartyInput!): DeletePartyPayload
+  deleteUser(input: DeleteUserInput!): DeleteUserPayload
+  addToMenuGroupDish(input: AddToMenuGroupDishMenuGroupInput!): AddToMenuGroupDishPayload
+  addToPartyMenu(input: AddToPartyMenuPartyInput!): AddToPartyMenuPayload
+  removeFromMenuGroupDish(input: RemoveFromMenuGroupDishMenuGroupInput!): RemoveFromMenuGroupDishPayload
+  createUser(input: SignupUserInput!): CreateUserPayload!
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
 }
 
 # Information about pagination in a connection.
 type PageInfo {
-# When paginating forwards, are there more items?
-hasNextPage: Boolean!
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
 
-# When paginating backwards, are there more items?
-hasPreviousPage: Boolean!
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
 
-# When paginating backwards, the cursor to continue.
-startCursor: String
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
 
-# When paginating forwards, the cursor to continue.
-endCursor: String
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Party implements Node {
+  createdAt: DateTime!
+  guests: Int!
+  id: ID!
+  menu(filter: MenuGroupFilter, orderBy: MenuGroupOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): MenuGroupConnection
+  theme: String!
+  updatedAt: DateTime!
+}
+
+# A connection to a list of items.
+type PartyConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [PartyEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+# An edge in a connection.
+type PartyEdge {
+  # The item at the end of the edge.
+  node: Party!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input PartyFilter {
+  AND: [PartyFilter!]
+  OR: [PartyFilter!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  guests: Int
+  guests_not: Int
+  guests_in: [Int!]
+  guests_not_in: [Int!]
+  guests_lt: Int
+  guests_lte: Int
+  guests_gt: Int
+  guests_gte: Int
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  theme: String
+  theme_not: String
+  theme_in: [String!]
+  theme_not_in: [String!]
+  theme_lt: String
+  theme_lte: String
+  theme_gt: String
+  theme_gte: String
+  theme_contains: String
+  theme_not_contains: String
+  theme_starts_with: String
+  theme_not_starts_with: String
+  theme_ends_with: String
+  theme_not_ends_with: String
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  menu_every: MenuGroupFilter
+  menu_some: MenuGroupFilter
+  menu_none: MenuGroupFilter
+}
+
+input PartymenuMenuGroup {
+  heading: String
+  dishesIds: [ID!]
+  dishes: [PartymenuMenuGroupdishesDish!]
+}
+
+input PartymenuMenuGroupdishesDish {
+  description: String
+  name: String!
+  menusIds: [ID!]
+  menus: [PartymenuMenuGroupdishesDishmenusMenuGroup!]
+}
+
+input PartymenuMenuGroupdishesDishmenusMenuGroup {
+  heading: String
+  partyId: ID
+  dishesIds: [ID!]
+}
+
+enum PartyOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+  guests_ASC
+  guests_DESC
+  id_ASC
+  id_DESC
+  theme_ASC
+  theme_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type Query {
+  viewer: Viewer!
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+}
+
+input RemoveFromMenuGroupDishMenuGroupInput {
+  dishesDishId: ID!
+  menusMenuGroupId: ID!
+  clientMutationId: String!
+}
+
+type RemoveFromMenuGroupDishPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  menusMenuGroup: MenuGroup
+  dishesDish: Dish
+  menusMenuGroupEdge: MenuGroupEdge
+  dishesDishEdge: DishEdge
+}
+
+input SignupUserInput {
+  clientMutationId: String!
+}
+
+input UpdateDish {
+  description: String
+  id: ID!
+  name: String
+  menusIds: [ID!]
+  menus: [DishmenusMenuGroup!]
+}
+
+input UpdateDishInput {
+  description: String
+  id: ID!
+  name: String
+  menusIds: [ID!]
+  menus: [DishmenusMenuGroup!]
+  clientMutationId: String!
+}
+
+type UpdateDishPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  dish: Dish
+  edge: DishEdge
+}
+
+input UpdateFile {
+  id: ID!
+  name: String
+}
+
+input UpdateFileInput {
+  id: ID!
+  name: String
+  clientMutationId: String!
+}
+
+type UpdateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input UpdateMenuGroup {
+  heading: String
+  id: ID!
+  partyId: ID
+  party: MenuGrouppartyParty
+  dishesIds: [ID!]
+  dishes: [MenuGroupdishesDish!]
+}
+
+input UpdateMenuGroupInput {
+  heading: String
+  id: ID!
+  partyId: ID
+  party: MenuGrouppartyParty
+  dishesIds: [ID!]
+  dishes: [MenuGroupdishesDish!]
+  clientMutationId: String!
+}
+
+type UpdateMenuGroupPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  menuGroup: MenuGroup
+  edge: MenuGroupEdge
+  party: Party
+}
+
+input UpdateOrCreateDishInput {
+  update: UpdateDish!
+  create: CreateDish!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateDishPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  dish: Dish
+  edge: DishEdge
+}
+
+input UpdateOrCreateFileInput {
+  update: UpdateFile!
+  create: CreateFile!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input UpdateOrCreateMenuGroupInput {
+  update: UpdateMenuGroup!
+  create: CreateMenuGroup!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateMenuGroupPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  menuGroup: MenuGroup
+  edge: MenuGroupEdge
+  party: Party
+}
+
+input UpdateOrCreatePartyInput {
+  update: UpdateParty!
+  create: CreateParty!
+  clientMutationId: String!
+}
+
+type UpdateOrCreatePartyPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  party: Party
+  edge: PartyEdge
+}
+
+input UpdateOrCreateUserInput {
+  update: UpdateUser!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+}
+
+input UpdateParty {
+  guests: Int
+  id: ID!
+  theme: String
+  menuIds: [ID!]
+  menu: [PartymenuMenuGroup!]
+}
+
+input UpdatePartyInput {
+  guests: Int
+  id: ID!
+  theme: String
+  menuIds: [ID!]
+  menu: [PartymenuMenuGroup!]
+  clientMutationId: String!
+}
+
+type UpdatePartyPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  party: Party
+  edge: PartyEdge
+}
+
+input UpdateUser {
+  id: ID!
+}
+
+input UpdateUserInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type UpdateUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+}
+
+type User implements Node {
+  createdAt: DateTime!
+  id: ID!
+  updatedAt: DateTime!
+}
+
+# A connection to a list of items.
+type UserConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+# An edge in a connection.
+type UserEdge {
+  # The item at the end of the edge.
+  node: User!
+
+  # A cursor for use in pagination.
+  cursor: String!
 }
 
 input UserFilter {
-AND: [UserFilter!]
-OR: [UserFilter!]
-createdAt: DateTime
-createdAt_not: DateTime
-createdAt_in: [DateTime!]
-createdAt_not_in: [DateTime!]
-createdAt_lt: DateTime
-createdAt_lte: DateTime
-createdAt_gt: DateTime
-createdAt_gte: DateTime
-id: ID
-id_not: ID
-id_in: [ID!]
-id_not_in: [ID!]
-id_lt: ID
-id_lte: ID
-id_gt: ID
-id_gte: ID
-id_contains: ID
-id_not_contains: ID
-id_starts_with: ID
-id_not_starts_with: ID
-id_ends_with: ID
-id_not_ends_with: ID
-updatedAt: DateTime
-updatedAt_not: DateTime
-updatedAt_in: [DateTime!]
-updatedAt_not_in: [DateTime!]
-updatedAt_lt: DateTime
-updatedAt_lte: DateTime
-updatedAt_gt: DateTime
-updatedAt_gte: DateTime
+  AND: [UserFilter!]
+  OR: [UserFilter!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
 }
 
 enum UserOrderBy {
-createdAt_ASC
-createdAt_DESC
-id_ASC
-id_DESC
-updatedAt_ASC
-updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 # This is the famous Relay viewer object
 type Viewer {
-allFiles(filter: FileFilter, orderBy: FileOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
-allParties(filter: PartyFilter, orderBy: PartyOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): PartyConnection!
-allUsers(filter: UserFilter, orderBy: UserOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-user: User
-File(id: ID, secret: String, url: String): File
-Party(id: ID): Party
-User(id: ID): User
-id: ID!
+  allDishes(filter: DishFilter, orderBy: DishOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): DishConnection!
+  allFiles(filter: FileFilter, orderBy: FileOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
+  allMenuGroups(filter: MenuGroupFilter, orderBy: MenuGroupOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): MenuGroupConnection!
+  allParties(filter: PartyFilter, orderBy: PartyOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): PartyConnection!
+  allUsers(filter: UserFilter, orderBy: UserOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  user: User
+  Dish(id: ID): Dish
+  File(id: ID, secret: String, url: String): File
+  MenuGroup(id: ID): MenuGroup
+  Party(id: ID): Party
+  User(id: ID): User
+  id: ID!
 }
+

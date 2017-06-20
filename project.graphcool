@@ -1,5 +1,5 @@
 # project: cj41qztj1m8hn01772qyzbcal
-# version: 1
+# version: 2
 
 type File implements Node {
   contentType: String!
@@ -17,6 +17,25 @@ type Party implements Node {
   guests: Int!
   id: ID! @isUnique
   theme: String!
+  updatedAt: DateTime!
+  menu: [MenuGroup!]! @relation(name: "PartyMenu")
+}
+
+type MenuGroup implements Node {
+  heading: String
+  dishes: [Dish!]! @relation(name: "MenuGroupDish")
+  party: Party! @relation(name: "PartyMenu")
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+}
+
+type Dish implements Node {
+  name: String!
+  description: String
+  menus: [MenuGroup!]! @relation(name: "MenuGroupDish")
+  createdAt: DateTime!
+  id: ID! @isUnique
   updatedAt: DateTime!
 }
 
